@@ -4,10 +4,6 @@ import { hash } from 'bcryptjs';
 import request from 'supertest';
 import { v4 as uuidV4 } from 'uuid';
 import { app } from '../../../../app';
-import { UsersRepository } from '../../repositories/UsersRepository';
-import { verify } from 'jsonwebtoken';
-
-import authConfig from '../../../../config/auth';
 
 
 let connection: Connection;
@@ -41,23 +37,6 @@ describe("Authenticate User", () => {
         password: "123456"
       });
 
-    const token = response.body;
-    console.log(token);
-
-    console.log(response.status);
-
-    expect(response.status).toBe(200);
-    // expect(response.body).toEqual({
-    //   user: {
-    //     id: user.id,
-    //     name: user.name,
-    //     email: user.email
-    //   },
-    //   token: expect.any(String)
-    // });
-
-    // expect(() => {
-    //   verify(response.body.token, authConfig.jwt.secret);
-    // }).not.toThrowError();
+    expect(response.body).toHaveProperty("token");
   });
 });
