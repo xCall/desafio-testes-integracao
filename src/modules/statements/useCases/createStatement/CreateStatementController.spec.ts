@@ -24,7 +24,7 @@ describe("Create Statement", () => {
   it("should be able to create a new deposit", async () => {
     await request(app).post('/api/v1/users').send(user);
     const loginUser = await request(app).post('/api/v1/sessions').send(user);
-    const token = loginUser.body.token;
+    const { token } = loginUser.body;
 
     const statement = await request(app).post('/api/v1/statements/deposit').send({
       amount: 150.00,
@@ -36,5 +36,19 @@ describe("Create Statement", () => {
     expect(statement.statusCode).toBe(201);
   });
 
+  it("should be able to create a new withdraw", async () => {
+    await request(app).post('/api/v1/users').send(user);
+    const loginUser = await request(app).post('/api/v1/sessions').send(user);
+    const { token } = loginUser.body;
+
+    const statement = await request(app).post('/api/v1/statements/withdraw').send({
+      amount: 50,
+      description: "Withdraw teste"
+    }).set({
+      Authorization: `Bearer ${token}`
+    });
+
+    expect(statement.statusCode).toBe(201);
+  });
 
 });
